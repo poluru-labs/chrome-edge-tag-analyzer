@@ -6,6 +6,11 @@ Maintained by [Subrahmanyam Poluru](https://polurus.com) · Poluru Labs.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
+## Screenshot
+
+<img width="1593" height="922" alt="image" src="https://github.com/user-attachments/assets/5eca8cd2-32cc-4230-bfd2-9ce35b485c51" />
+
+
 ## Features
 
 - Reads the current tab URL
