@@ -7,33 +7,39 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <header class="header">
-    <h1>HTML Tag Counter</h1>
+  <header class="mast">
+    <div class="mast-mark" aria-hidden="true">TC</div>
+    <div class="mast-copy">
+      <p class="mast-name">HTML Tag Counter</p>
+      <p class="mast-tag">Count tags on the active tab</p>
+    </div>
+    <span class="mast-ver">1.0</span>
   </header>
 
-  <p class="url-display" id="currentUrl">Loading current page…</p>
+  <main class="panel">
+    <p class="field-label">Current page</p>
+    <p id="currentUrl" class="page-url" title="">Open a tab, then click Analyze Page.</p>
 
-  <div class="controls">
-    <button type="button" class="analyze-btn" id="analyzeBtn">Analyze Page</button>
-    <button type="button" class="clear-btn" id="clearBtn">Clear Results</button>
-  </div>
-
-  <div id="loading" class="loading" hidden>Analyzing page tags…</div>
-  <div id="error" class="error" hidden></div>
-
-  <div id="results" class="results" hidden>
-    <div class="stats-header">
-      <span>HTML tags</span>
-      <span class="total-count" id="totalCount">Total: 0</span>
+    <div class="actions">
+      <button type="button" id="analyzeBtn" class="btn btn-primary">Analyze Page</button>
+      <button type="button" id="clearBtn" class="btn btn-ghost">Clear</button>
     </div>
-    <div id="tagsList"></div>
-  </div>
 
-  <p id="noResults" class="no-results">
-    Click Analyze Page to count HTML tags on the current tab.
-  </p>
+    <section class="result" aria-label="Tag counts">
+      <div class="result-head">
+        <p class="result-kicker" id="resultKicker">Tags</p>
+        <p class="result-meta" id="resultMeta"></p>
+      </div>
+      <div id="output" class="result-body is-empty" role="status" aria-live="polite">
+        <p class="empty-title">Nothing analyzed</p>
+        <p class="empty-copy">Click Analyze Page to count every HTML tag on this tab.</p>
+      </div>
+    </section>
+  </main>
 
-  <p class="legal">MIT © Poluru Labs · Counts stay on this machine</p>
+  <footer class="foot">
+    Poluru Labs · Counts stay on this machine
+  </footer>
 
   <script src="popup.js"></script>
 </body>

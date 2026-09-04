@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Brand color set to `#295F98`
+- Clean inspector popup: ink masthead, Tag | Count table, frequency bars
 - Repository layout: `popup/`, `icons/`, `examples/` with `manifest.json` at the repo root
 - Removed persistent `<all_urls>` content script; analysis runs only after **Analyze Page**
 - MIT copyright holder set to Subrahmanyam Poluru / Poluru Labs

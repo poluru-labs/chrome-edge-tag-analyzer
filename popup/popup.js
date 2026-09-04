@@ -1,29 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
   const analyzeBtn = document.getElementById('analyzeBtn');
   const clearBtn = document.getElementById('clearBtn');
-  const currentUrlDiv = document.getElementById('currentUrl');
-  const loadingDiv = document.getElementById('loading');
-  const errorDiv = document.getElementById('error');
-  const resultsDiv = document.getElementById('results');
-  const noResultsDiv = document.getElementById('noResults');
-  const tagsListDiv = document.getElementById('tagsList');
-  const totalCountSpan = document.getElementById('totalCount');
-
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    if (tabs[0]?.url) {
-      currentUrlDiv.textContent = tabs[0].url;
-      currentUrlDiv.title = tabs[0].url;
-    }
-  });
+  const currentUrl = document.getElementById('currentUrl');
+  const output = document.getElementById('output');
+  const kicker = document.getElementById('resultKicker');
+  const meta = document.getElementById('resultMeta');
 
   analyzeBtn.addEventListener('click', analyzePage);
-  clearBtn.addEventListener('click', clearResults);
-  showNoResults();
+  clearBtn.addEventListener('click', resetUi);
+  showTabUrl();
+
+  function showTabUrl() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (tabs[0]?.url) {
+        currentUrl.textContent = tabs[0].url;
+        currentUrl.title = tabs[0].url;
+      }
+    });
+  }
 
   function analyzePage() {
-    showLoading();
-    hideError();
+    analyzeBtn.classList.add('is-busy');
     analyzeBtn.disabled = true;
+    analyzeBtn.textContent = 'Analyzing…';
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       if (!tabs[0]) {
@@ -32,12 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       if (tabs[0].url) {
-        currentUrlDiv.textContent = tabs[0].url;
-        currentUrlDiv.title = tabs[0].url;
+        currentUrl.textContent = tabs[0].url;
+        currentUrl.title = tabs[0].url;
       }
 
       if (!isInjectableUrl(tabs[0].url)) {
-        finishWithError('Cannot analyze this page due to browser restrictions.');
+        finishWithError('Chrome and Edge internal pages cannot be analyzed.');
         return;
       }
 
@@ -47,102 +46,123 @@ document.addEventListener('DOMContentLoaded', function () {
           func: countTags,
         },
         function (results) {
-          analyzeBtn.disabled = false;
-          hideLoading();
+          resetButton();
 
           if (chrome.runtime.lastError) {
-            showError(chrome.runtime.lastError.message);
+            showMessage(chrome.runtime.lastError.message, 'error');
             return;
           }
 
-          if (results && results[0] && results[0].result) {
-            displayResults(results[0].result);
-          } else {
-            showError('Failed to analyze the page. Please try again.');
+          const data = results && results[0] && results[0].result;
+          if (!data || !data.tags || !data.tags.length) {
+            showMessage('No HTML tags found on this page.', 'error');
+            return;
           }
+
+          showTable(data);
         },
       );
     });
   }
 
   function finishWithError(message) {
-    analyzeBtn.disabled = false;
-    hideLoading();
-    showError(message);
+    resetButton();
+    showMessage(message, 'error');
   }
 
-  function displayResults(data) {
-    if (!data || !data.tags || data.tags.length === 0) {
-      showNoResults();
-      return;
-    }
+  function resetButton() {
+    analyzeBtn.classList.remove('is-busy');
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = 'Analyze Page';
+  }
 
-    totalCountSpan.textContent =
-      'Total: ' + data.totalElements + ' elements (' + data.uniqueTags + ' unique tags)';
+  function resetUi() {
+    kicker.textContent = 'Tags';
+    meta.textContent = '';
+    output.className = 'result-body is-empty';
+    output.replaceChildren();
+    const title = document.createElement('p');
+    title.className = 'empty-title';
+    title.textContent = 'Nothing analyzed';
+    const copy = document.createElement('p');
+    copy.className = 'empty-copy';
+    copy.textContent = 'Click Analyze Page to count every HTML tag on this tab.';
+    output.append(title, copy);
+    resetButton();
+    showTabUrl();
+  }
 
-    tagsListDiv.replaceChildren();
+  function showMessage(message, type) {
+    kicker.textContent = type === 'error' ? 'Could not analyze' : 'Tags';
+    meta.textContent = '';
+    output.className = 'result-body';
+    output.replaceChildren();
+    const p = document.createElement('p');
+    p.className = 'message' + (type === 'error' ? ' error' : '');
+    p.textContent = message;
+    output.append(p);
+  }
 
+  function showTable(data) {
+    kicker.textContent = data.uniqueTags === 1 ? '1 tag type' : data.uniqueTags + ' tag types';
+    meta.textContent = data.totalElements + ' elements';
+    output.className = 'result-body';
+    output.replaceChildren();
+
+    const max = data.tags[0][1] || 1;
+    const table = document.createElement('table');
+    table.className = 'grid';
+
+    const colgroup = document.createElement('colgroup');
+    const colTag = document.createElement('col');
+    colTag.className = 'col-tag';
+    const colCount = document.createElement('col');
+    colCount.className = 'col-count';
+    colgroup.append(colTag, colCount);
+
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    const thTag = document.createElement('th');
+    thTag.scope = 'col';
+    thTag.textContent = 'Tag';
+    const thCount = document.createElement('th');
+    thCount.scope = 'col';
+    thCount.textContent = 'Count';
+    headRow.append(thTag, thCount);
+    thead.append(headRow);
+
+    const tbody = document.createElement('tbody');
     data.tags.forEach(function (entry) {
-      const tagName = entry[0];
+      const name = entry[0];
       const count = entry[1];
-      const tagItem = document.createElement('div');
-      tagItem.className = 'tag-item';
+      const tr = document.createElement('tr');
 
-      const tagNameSpan = document.createElement('span');
-      tagNameSpan.className = 'tag-name';
-      tagNameSpan.textContent = '<' + tagName + '>';
+      const tdTag = document.createElement('td');
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = '<' + name + '>';
+      tdTag.append(tag);
 
-      const tagCountSpan = document.createElement('span');
-      tagCountSpan.className = 'tag-count';
-      tagCountSpan.textContent = String(count);
+      const tdCount = document.createElement('td');
+      const wrap = document.createElement('div');
+      wrap.className = 'count-cell';
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      const fill = document.createElement('span');
+      fill.style.width = Math.max(6, Math.round((count / max) * 100)) + '%';
+      bar.append(fill);
+      const num = document.createElement('span');
+      num.className = 'count';
+      num.textContent = String(count);
+      wrap.append(bar, num);
+      tdCount.append(wrap);
 
-      tagItem.append(tagNameSpan, tagCountSpan);
-      tagsListDiv.append(tagItem);
+      tr.append(tdTag, tdCount);
+      tbody.append(tr);
     });
 
-    hideNoResults();
-    hideError();
-    resultsDiv.hidden = false;
-  }
-
-  function showLoading() {
-    loadingDiv.hidden = false;
-    resultsDiv.hidden = true;
-    noResultsDiv.hidden = true;
-  }
-
-  function hideLoading() {
-    loadingDiv.hidden = true;
-  }
-
-  function showError(message) {
-    errorDiv.textContent = message;
-    errorDiv.hidden = false;
-    resultsDiv.hidden = true;
-    noResultsDiv.hidden = true;
-  }
-
-  function hideError() {
-    errorDiv.hidden = true;
-  }
-
-  function showNoResults() {
-    noResultsDiv.hidden = false;
-    resultsDiv.hidden = true;
-  }
-
-  function hideNoResults() {
-    noResultsDiv.hidden = true;
-  }
-
-  function clearResults() {
-    hideError();
-    hideLoading();
-    resultsDiv.hidden = true;
-    noResultsDiv.hidden = false;
-    tagsListDiv.replaceChildren();
-    totalCountSpan.textContent = 'Total: 0';
-    analyzeBtn.disabled = false;
+    table.append(colgroup, thead, tbody);
+    output.append(table);
   }
 
   function isInjectableUrl(url) {
