@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page for HTML Tag Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .highlight {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Test Page for HTML Tag Counter Extension</h1>
+            <nav>
+                <ul>
+                    <li><a href="#section1">Section 1</a></li>
+                    <li><a href="#section2">Section 2</a></li>
+                    <li><a href="#section3">Section 3</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="section1">
+                <h2>Section 1: Basic Elements</h2>
+                <p>This is a paragraph with <strong>bold text</strong> and <em>italic text</em>.</p>
+                <p>Another paragraph with a <a href="https://example.com">link</a>.</p>
+                
+                <div class="highlight">
+                    <h3>Subsection</h3>
+                    <p>Content in a div with class highlight.</p>
+                </div>
+            </section>
+
+            <section id="section2">
+                <h2>Section 2: Lists and Media</h2>
+                <h3>Unordered List</h3>
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+
+                <h3>Ordered List</h3>
+                <ol>
+                    <li>First item</li>
+                    <li>Second item</li>
+                    <li>Third item</li>
+                </ol>
+
+                <h3>Images</h3>
+                <img src="https://via.placeholder.com/150x100" alt="Placeholder image 1">
+                <img src="https://via.placeholder.com/150x100" alt="Placeholder image 2">
+            </section>
+
+            <section id="section3">
+                <h2>Section 3: Forms and Tables</h2>
+                
+                <h3>Simple Form</h3>
+                <form>
+                    <div>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div>
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4"></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+
+                <h3>Simple Table</h3>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Expected Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>div</td>
+                            <td>3+</td>
+                        </tr>
+                        <tr>
+                            <td>p</td>
+                            <td>4+</td>
+                        </tr>
+                        <tr>
+                            <td>h1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>h2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>h3</td>
+                            <td>4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Test Page. Use this page to test your HTML Tag Counter extension!</p>
+            <p>
+                <span>Spans: </span>
+                <span>Multiple </span>
+                <span>span </span>
+                <span>elements </span>
+                <span>here.</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Some JavaScript to add more elements dynamically
+        console.log('Test page loaded successfully!');
+        
+        // Add some dynamic content for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            const footer = document.querySelector('footer');
+            const dynamicDiv = document.createElement('div');
+            dynamicDiv.innerHTML = '<p>This content was added dynamically via JavaScript.</p>';
+            footer.appendChild(dynamicDiv);
+        });
+    </script>
+</body>
+</html>
