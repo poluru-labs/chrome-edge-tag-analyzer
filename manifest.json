@@ -1,26 +1,26 @@
 {
   "manifest_version": 3,
   "name": "HTML Tag Counter",
-  "version": "1.0",
-  "description": "Count and analyze HTML tags on any webpage",
+  "version": "1.0.0",
+  "description": "Count HTML tags on the active tab in Chrome or Edge. Analysis stays local.",
+  "homepage_url": "https://github.com/poluru-labs/chrome-edge-tag-analyzer",
+  "author": "Subrahmanyam Poluru / Poluru Labs",
   "permissions": [
     "activeTab",
     "scripting"
   ],
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "HTML Tag Counter"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "run_at": "document_end"
+    "default_popup": "popup/popup.html",
+    "default_title": "HTML Tag Counter",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
-  ],
+  },
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Tag Counter</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>HTML Tag Counter</h1>
+  </header>
+
+  <p class="url-display" id="currentUrl">Loading current page…</p>
+
+  <div class="controls">
+    <button type="button" class="analyze-btn" id="analyzeBtn">Analyze Page</button>
+    <button type="button" class="clear-btn" id="clearBtn">Clear Results</button>
+  </div>
+
+  <div id="loading" class="loading" hidden>Analyzing page tags…</div>
+  <div id="error" class="error" hidden></div>
+
+  <div id="results" class="results" hidden>
+    <div class="stats-header">
+      <span>HTML tags</span>
+      <span class="total-count" id="totalCount">Total: 0</span>
+    </div>
+    <div id="tagsList"></div>
+  </div>
+
+  <p id="noResults" class="no-results">
+    Click Analyze Page to count HTML tags on the current tab.
+  </p>
+
+  <p class="legal">MIT © Poluru Labs · Counts stay on this machine</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>

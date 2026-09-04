@@ -1,0 +1,29 @@
+HTML Tag Counter
+Copyright (c) 2026 Subrahmanyam Poluru / Poluru Labs
+
+This product is licensed under the MIT License. See the LICENSE file for the
+full license text.
+
+Author: Subrahmanyam Poluru
+Portfolio: https://polurus.com
+LinkedIn: https://www.linkedin.com/in/polurus/
+GitHub: https://github.com/poluru-labs/chrome-edge-tag-analyzer
+
+Third-party software
+--------------------
+
+This extension has no bundled npm dependencies. It uses Chrome and Microsoft
+Edge extension APIs provided by the Chromium project. Chromium, Chrome, and
+Edge are trademarks of their respective owners. This project is not affiliated
+with Google or Microsoft.
+
+Demo content
+------------
+
+Markup in examples/test-page.html is fictional sample content for local
+testing. It is not production data.
+
+Icons
+-----
+
+Toolbar icons in icons/ are original work of Poluru Labs.
