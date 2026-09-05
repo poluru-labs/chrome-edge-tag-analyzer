@@ -12,6 +12,11 @@ This extension is built as a Manifest V3 browser extension and runs entirely on 
 
 It is designed for quick page audits, debugging, SEO checks, and learning how a page is structured without sending data anywhere.
 
+## Screenshot
+
+<img width="1593" height="922" alt="image" src="https://github.com/user-attachments/assets/5eca8cd2-32cc-4230-bfd2-9ce35b485c51" />
+
+
 ## Features
 
 - Reads the current tab URL and displays it in the popup
