@@ -1,4 +1,4 @@
-# HTML Tag Counter
+# Web Extension for HTML Tag Counter
 
 A lightweight Chrome and Microsoft Edge extension that counts every HTML tag on the active tab and shows the totals in a simple ranked table.
 
